@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "916402394436",
+    "project_id": "flutterfirebaselogin-ba439",
+    "storage_bucket": "flutterfirebaselogin-ba439.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:916402394436:android:4016edf29b96b0ca5b3311",
+        "android_client_info": {
+          "package_name": "io.baliza.medicineapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "916402394436-fkneeecd0gi9g21529o21t7r4ihcpsr0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5evZHXbDXFjKlCSzrfOuggqdNvc2tJR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "916402394436-fkneeecd0gi9g21529o21t7r4ihcpsr0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
