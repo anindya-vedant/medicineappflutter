@@ -3,29 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:medicineapp/cart.dart';
 import 'package:medicineapp/map.dart';
+import 'package:medicineapp/medicinepage.dart';
 
 class HomeScreen extends StatefulWidget {
-  final bool hasOrdered;                                                            //this is a boolean that is going to be used to display the map page if the user decides to order something
-  const HomeScreen({Key key, this.hasOrdered=false}) : super(key: key);
+  final bool hasOrdered; //this is a boolean that is going to be used to display the map page if the user decides to order something
+  const HomeScreen({Key key, this.hasOrdered = false}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final CollectionReference _medicine =                                             //Creating an instance of a Firebase collection that is used to store data of medicine
+  final CollectionReference
+      _medicine = //Creating an instance of a Firebase collection that is used to store data of medicine
       Firestore.instance.collection('medicine');
 
-  final CollectionReference _usercart = Firestore.instance.collection('cart');     //Creating an instance of a Firebase collection to simulate a cart of a user
+  final CollectionReference _usercart = Firestore.instance.collection(
+      'cart'); //Creating an instance of a Firebase collection to simulate a cart of a user
 
-  final FirebaseAuth auth = FirebaseAuth.instance;                                 //Firebase Auth instance
+  final FirebaseAuth auth = FirebaseAuth.instance; //Firebase Auth instance
 
-  String _productid;                                                               //Variables to fetch ProductId, Medicine Name, Price of the medicine and Firebase User ID
-  String _medicinename;
-  int _price;
   String uid;
 
-  Future _addToCart(_pid, _mname, _mprice) async {                                //this function is used to create a collection respective to user id to add and/or delete products from it (A cart)
+  Future _addToCart(_pid, _mname, _mprice) async {
+    //this function is used to create a collection respective to user id to add and/or delete products from it (A cart)
     final FirebaseUser user = await auth.currentUser();
     uid = user.uid;
     return _usercart
@@ -35,87 +36,163 @@ class _HomeScreenState extends State<HomeScreen> {
         .setData({"name": _mname, "price": _mprice});
   }
 
-  final SnackBar _snackBar =                                                      //SnackBar to be displayed if a medicine if added to the cart
+  final SnackBar
+      _snackBar = //SnackBar to be displayed if a medicine if added to the cart
       SnackBar(content: Text("Medicine added to the cart"));
-
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
-          colors: [
-            Colors.green[200],
-            Colors.lightBlue[100],
-          ],
-        ),
-      ),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: Stack(
             children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(20.0, 50.0, 10.0, 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Welcome User",
-                      style: TextStyle(
-                        fontSize: 30.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 7.0,
-                            color: Colors.grey[700],
-                            offset: Offset(1.0, 1.0),
+              Positioned(
+                left: 20.0,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 10.0, 0.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            "Hi,",
+                            style: TextStyle(
+                              fontSize: 30.0,
+                              color: Colors.black,
+                            ),
                           ),
+                          Text(
+                            " User",
+                            style: TextStyle(
+                              fontSize: 30.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
                         ],
                       ),
-                    ),
-                    Stack(
-                      children: [
-                        Card(
-                          elevation: 10,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(35.0),
+                      SizedBox(
+                        width: 190.0,
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.shopping_cart_outlined,
+                              color: Colors.black,
+                              size: 19,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CartPage(userid: uid)),
+                              );
+                            },
                           ),
-                          child: SizedBox(
-                            width: 35,
-                            height: 35,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.shopping_cart_outlined,
-                                color: Colors.black,
-                                size: 19,
+                          (widget.hasOrdered)?IconButton(
+                            icon: Icon(
+                              Icons.map_rounded,
+                              color: Colors.black,
+                              size: 19,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MapPage()),
+                              );
+                            },
+                          ):Container(),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 140.0,
+                left: 19.0,
+                child: Container(
+                  width: 375.0,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+                    child: TextField(
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        hintText: "Search for medicine",
+                        fillColor: Colors.grey[200],
+                        filled: true,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 270.0,
+                left: 40.0,
+                child: Container(
+                  alignment: Alignment.bottomLeft,
+                  width: 330.0,
+                  height: 150.0,
+                  decoration: BoxDecoration(
+                    color: Colors.blue[50],
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  padding: EdgeInsets.fromLTRB(43.0, 25.0, 0.0, 0.0),
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          "We will deliver you medicines",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(height:40.0),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.blue[600],
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          width: 105.0,
+                          height: 45.0,
+                          child: Center(
+                            child: Text(
+                              "Catalog",
+                              style: TextStyle(
+                                color: Colors.white,
                               ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          CartPage(userid: uid)),
-                                );
-                              },
                             ),
                           ),
                         ),
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
               ),
               Container(
-                padding: EdgeInsets.fromLTRB(10.0, 150.0, 10.0, 0.0),
-                child: FutureBuilder<QuerySnapshot>(                                //Using FutureBuilder (and not Stream Builder since the product list is static) to build a list view
-                    future: _medicine.getDocuments(),                               //of the medicine list with their price and a add to cart button
-                    // ignore: missing_return
+                padding: EdgeInsets.fromLTRB(10.0, 470.0, 10.0, 0.0),
+                child: FutureBuilder<QuerySnapshot>(
+                    //Using FutureBuilder (and not Stream Builder since the product list is static) to build a list view
+                    future: _medicine.getDocuments(),
+                    //of the medicine list with their price and a add to cart button
                     builder: (context, snapshot) {
-                      if (snapshot.hasError) {                                      //In case the firebase query fails then display the error
+                      if (snapshot.hasError) {
+                        //In case the firebase query fails then display the error
                         return Scaffold(
                           body: Center(
                             child: Text("Error: ${snapshot.error}"),
@@ -123,107 +200,145 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       }
 
-                      if (snapshot.connectionState == ConnectionState.done) {       //In case the firebase query goes through then return the listview
-                        return ListView(
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        //In case the firebase query goes through then return the listview
+                        return GridView(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 0.60,
+                                  mainAxisSpacing: 5,
+                                  crossAxisSpacing: 10),
+                          padding: EdgeInsets.all(20),
+                          scrollDirection: Axis.vertical,
                           children: snapshot.data.documents.map((document) {
-                            return Container(
-                              padding:
-                                  EdgeInsets.fromLTRB(10.0, 12.5, 20.0, 10.0),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              height: 100.0,
-                              margin: EdgeInsets.symmetric(
-                                vertical: 12.0,
-                                horizontal: 18.0,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "${document.data['name']}",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20.0,
-                                            fontFamily: "Lexend"),
-                                      ),
-                                      Text(
-                                        "\$ ${document.data['price']}",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20.0,
-                                            fontFamily: "Lexend"),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 3.0,
-                                  ),
-                                  TextButton(
-                                    child: Text(
-                                      "ADD TO CART",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        letterSpacing: 2.0,
-                                        fontSize: 9.0,
-                                      ),
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MedicineDesc(
+                                            medicineid: document.documentID)));
+                              },
+                              child: Container(
+                                padding:
+                                    EdgeInsets.fromLTRB(10.0, 12.5, 20.0, 10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.deepPurple[50],
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                height: 20.0,
+                                margin: EdgeInsets.symmetric(
+                                  vertical: 12.0,
+                                  horizontal: 18.0,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Image.network(
+                                      "${document.data['image']}",
+                                      scale: 10.0,
                                     ),
-                                    onPressed: () async {                             //when added to cart, this function gets the medicine id and name and adds it to user's collection(cart)
-                                      _productid = document.documentID;
-                                      _medicinename = document.data['name'];
-                                      _price = document.data['price'];
-                                      await _addToCart(
-                                          _productid, _medicinename, _price);
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(_snackBar);
-                                    },
-                                  )
-                                ],
+                                    SizedBox(height: 30.0),
+                                    Text(
+                                      "${document.data['name']}",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18.0,
+                                          fontFamily: "Lexend"),
+                                    ),
+                                    SizedBox(
+                                      height: 7.0,
+                                    ),
+                                    Text(
+                                      "${document.data['type']} \u2022 ${document.data['stock']} tablets",
+                                      style: TextStyle(
+                                          color: Colors.grey[400],
+                                          fontSize: 11.0,
+                                          fontFamily: "Lexend"),
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      "Rs. ${document.data['price']}",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Lexend"),
+                                    ),
+
+                                    /*TextButton(
+                                      child: Text(
+                                        "ADD TO CART",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          letterSpacing: 2.0,
+                                          fontSize: 9.0,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        //when added to cart, this function gets the medicine id and name and adds it to user's collection(cart)
+                                        _productid = document.documentID;
+                                        _medicinename = document.data['name'];
+                                        _price = document.data['price'];
+                                        await _addToCart(
+                                            _productid, _medicinename, _price);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(_snackBar);
+                                      },
+                                    )*/
+                                  ],
+                                ),
                               ),
                             );
                           }).toList(),
                         );
                       }
+
+                      return Scaffold(
+                        body: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
                     }),
               ),
-              (widget.hasOrdered)?Positioned(                                         //if user has ordered something, then help them to navigate to map otherwise return empty container
-                bottom: 100,
-                left: 20,
-                child:Container(
-                  padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                  width: 175.0,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.0),
-                      color: Colors.white),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.map_rounded,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => MapPage())
-                            );
-                          },
-                          child: Text(
-                            "Track your Order",
-                            style: TextStyle(color: Colors.black),
-                          )),
-                    ],
-                  ),
-                )
-              ): Container(),
+              /*(widget.hasOrdered)
+                  ? Positioned(
+                      //if user has ordered something, then help them to navigate to map otherwise return empty container
+                      bottom: 100,
+                      left: 20,
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                        width: 175.0,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            color: Colors.white),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.map_rounded,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 5.0,
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MapPage()));
+                                },
+                                child: Text(
+                                  "Track your Order",
+                                  style: TextStyle(color: Colors.black),
+                                )),
+                          ],
+                        ),
+                      ))
+                  : Container(),*/
             ],
           ),
         ),

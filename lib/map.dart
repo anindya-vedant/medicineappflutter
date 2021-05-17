@@ -16,14 +16,15 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {                                            //The code is pretty straight-forward integration of google maps with starting location at Marine Drive
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+       /* gradient: LinearGradient(
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
           colors: [
             Colors.green[200],
             Colors.lightBlue[100],
           ],
-        ),
+        )*/
+        color: Colors.green[200],
       ),
       child: SafeArea(
         child: Padding(
@@ -69,6 +70,7 @@ class _MapPageState extends State<MapPage> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 10.0,),
                   TextButton(
                       onPressed: () {
                         Navigator.push(
@@ -81,7 +83,7 @@ class _MapPageState extends State<MapPage> {
                         "Go to Home",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 30.0,
+                          fontSize: 20.0,
                           fontWeight: FontWeight.bold,
                           shadows: [
                             Shadow(

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:medicineapp/map.dart';
 
 class CartPage extends StatefulWidget {
-  final String userid;                                                              //Firebase User Id that is currently logged in, this will help in fetching the respective cart of the user
+  final String
+      userid; //Firebase User Id that is currently logged in, this will help in fetching the respective cart of the user
 
   const CartPage({Key key, this.userid}) : super(key: key);
 
@@ -13,24 +14,27 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  final CollectionReference _usercart = Firestore.instance.collection('cart');    //fetching the cart collection of the user
-  bool _hasOrdered = false;                                                       //to check for the order status of the user, currently set to false
+  CollectionReference _usercart = Firestore.instance
+      .collection('cart'); //fetching the cart collection of the user
+  bool _hasOrdered =
+      false; //to check for the order status of the user, currently set to false
 
   @override
-  Widget build(BuildContext context) {                                            //Building a scaffold with a listview to display the medicines present in the cart of the user logged in
+  Widget build(BuildContext context) {
+    //Building a scaffold with a listview to display the medicines present in the cart of the user logged in
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        /*gradient: LinearGradient(
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
           colors: [
             Colors.green[200],
             Colors.lightBlue[100],
           ],
-        ),
+        )*/
+        color: Colors.green[200],
       ),
       child: Scaffold(
-
         backgroundColor: Colors.transparent,
         body: SafeArea(
           child: Scaffold(
@@ -62,7 +66,132 @@ class _CartPageState extends State<CartPage> {
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(10.0, 150.0, 10.0, 0.0),
-                  child: FutureBuilder<QuerySnapshot>(                             //Currently implemented with FutureBuilder (looking to implement StreamBuilder) a listview to display the cart list
+                  child: StreamBuilder(
+                      stream: _usercart
+                          .document(widget.userid)
+                          .collection('cart')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          //In case the firebase query fails then display the error
+                          return Scaffold(
+                            body: Center(
+                              child: Text("Error: ${snapshot.error}"),
+                            ),
+                          );
+                        }
+                        /*if (snapshot.connectionState == ConnectionState.done) {
+                          return Scaffold(
+                            backgroundColor: Colors.transparent,
+                            body: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        };*/
+
+                        if (!snapshot.hasData) {
+                          return Scaffold(
+                            backgroundColor: Colors.transparent,
+                            body: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+
+                        /*return ListView(
+                          children: snapshot.data.documents.map<Widget>((document) {
+                            Container(
+                                padding: EdgeInsets.fromLTRB(
+                                    10.0, 12.5, 20.0, 10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                height: 100.0,
+                                margin: EdgeInsets.symmetric(
+                                  vertical: 12.0,
+                                  horizontal: 18.0,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "${document.data['name']}",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20.0,
+                                              fontFamily: "Lexend"),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 3.0,
+                                    ),
+                                  ],
+                                ));
+                          }).toList(),
+                        );*/
+                        else {
+                          return new ListView.builder(
+                              itemCount: snapshot.data.documents.length,
+                              itemBuilder: (context, index) {
+                                DocumentSnapshot ds =
+                                    snapshot.data.documents[index];
+                                return Container(
+                                    padding: EdgeInsets.fromLTRB(
+                                        10.0, 12.5, 20.0, 10.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    height: 75.0,
+                                    margin: EdgeInsets.symmetric(
+                                      vertical: 12.0,
+                                      horizontal: 18.0,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "${ds['name']}",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 20.0,
+                                                  fontFamily: "Lexend"),
+                                            ),
+                                            IconButton(
+                                                icon:
+                                                    Icon(Icons.delete_rounded),
+                                                onPressed: () {
+                                                      _usercart
+                                                          .document(
+                                                              widget.userid)
+                                                          .collection('cart')
+                                                          .document(
+                                                              ds.documentID).delete();
+
+                                                })
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 3.0,
+                                        ),
+                                      ],
+                                    ));
+                              });
+                        }
+                      }),
+                  /*child: FutureBuilder<QuerySnapshot>(                             //Currently implemented with FutureBuilder (looking to implement StreamBuilder) a listview to display the cart list
                       future: _usercart
                           .document("${widget.userid}")
                           .collection("cart")
@@ -119,9 +248,10 @@ class _CartPageState extends State<CartPage> {
                             }).toList(),
                           );
                         }
-                      }),
+                      })*/
                 ),
-                Positioned(                                                         //Since a stack is implemented, using positioned to position a button to complete order
+                Positioned(
+                    //Since a stack is implemented, using positioned to position a button to complete order
                     bottom: 100,
                     left: 20,
                     child: Row(
@@ -156,7 +286,7 @@ class _CartPageState extends State<CartPage> {
                           ),
                         ),
                         SizedBox(width: 12.0),
-                        (_hasOrdered)                                               //if order is completed then the user has the option to go to the map
+                        (_hasOrdered) //if order is completed then the user has the option to go to the map
                             ? Container(
                                 padding:
                                     EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
