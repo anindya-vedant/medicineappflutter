@@ -3,8 +3,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:medicineapp/homescreen.dart';
 
 class MapPage extends StatefulWidget {
-  final bool hasOrdered = true;                                                    //Since a user can only come to this page once the order is complete, hence setting it to true
-                                                                                  //and will use it to navigate directly to this page
+  final bool hasOrdered = true;                                                 //Since a user can only come to this page once the order is complete, hence setting it to true
+                                                                                //and will use it to navigate directly to this page
   const MapPage({Key key}) : super(key: key);
 
   @override
@@ -13,17 +13,10 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   @override
-  Widget build(BuildContext context) {                                            //The code is pretty straight-forward integration of google maps with starting location at Marine Drive
+  Widget build(BuildContext context) {                                          //The code is pretty straight-forward integration of google maps
+                                                                                // with starting location at Marine Drive
     return Container(
       decoration: BoxDecoration(
-       /* gradient: LinearGradient(
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
-          colors: [
-            Colors.green[200],
-            Colors.lightBlue[100],
-          ],
-        )*/
         color: Colors.green[200],
       ),
       child: SafeArea(

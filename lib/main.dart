@@ -21,12 +21,12 @@ class LandingHomePage extends StatefulWidget {
 
 class _LandingHomePageState extends State<LandingHomePage> {
   final FirebaseAuth _auth = FirebaseAuth
-      .instance; //Firebase Auth instance to check for authentication process
+      .instance;                                                                //Firebase Auth instance to check for authentication process
 
-  FacebookLogin _facebookLogin = FacebookLogin();
+  FacebookLogin _facebookLogin = FacebookLogin();                               //Facebook Login instance created that is to be used for facebook login
 
   Future _handlelogin() async {
-    //function to handle user login from from facebook
+                                                                                //function to handle user login from from facebook
     FacebookLoginResult _result = await _facebookLogin.logIn(['email']);
     switch (_result.status) {
       case FacebookLoginStatus.cancelledByUser:
@@ -37,20 +37,18 @@ class _LandingHomePageState extends State<LandingHomePage> {
         print("Failed due to error : $error_message");
         break;
       case FacebookLoginStatus
-          .loggedIn: //in case the Login Result Status (_result) is successful then we log in the user by using the _loginWithFacebook function
+          .loggedIn:                                                            //in case the Login Result Status (_result) is successful then we log in the user by using the _loginWithFacebook function
         await _loginWithFacebook(_result);
     }
   }
 
-  Future _loginWithFacebook(FacebookLoginResult _result) async {
-    //this function fetches the facebook accesstoken, provides it to Firebase and check for it authenticity
+  Future _loginWithFacebook(FacebookLoginResult _result) async {                //this function fetches the facebook accesstoken, provides it to Firebase and check for it authenticity
     FacebookAccessToken _accessToken = _result.accessToken;
     AuthCredential _credential =
         FacebookAuthProvider.getCredential(accessToken: _accessToken.token);
     var a = await _auth.signInWithCredential(_credential);
     FirebaseUser fbuser = a.user;
-    if (fbuser != null) {
-      //like we did with the phone number authentication, if the user is not null then redirect them to the Home Screen
+    if (fbuser != null) {                                                       //if the user is not null then redirect them to the Home Screen
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
     } else {
@@ -59,7 +57,7 @@ class _LandingHomePageState extends State<LandingHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {                                          //The layout code for the page
     return SafeArea(
       child: Container(
         child: Scaffold(
@@ -117,7 +115,7 @@ class _LandingHomePageState extends State<LandingHomePage> {
                 ),
                 Stack(
                   children: [
-                    GestureDetector(
+                    GestureDetector(                                            //Added a gesture detector to make the containers act like a button
                       onTap: (){
                         Navigator.push(
                             context,

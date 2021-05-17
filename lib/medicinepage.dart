@@ -15,21 +15,21 @@ class MedicineDesc extends StatefulWidget {
 
 class _MedicineDescState extends State<MedicineDesc> {
   final CollectionReference
-      _medicine = //Creating an instance of a Firebase collection that is used to store data of medicine
+      _medicine =                                                               //Creating an instance of a Firebase collection that is used to store data of medicine
       Firestore.instance.collection('medicine');
 
-  final CollectionReference _usercart = Firestore.instance.collection('cart'); //Creating an instance of a Firebase collection to simulate a cart of a user
+  final CollectionReference _usercart = Firestore.instance.collection('cart');  //Creating an instance of a Firebase collection to simulate a cart of a user
 
   final FirebaseAuth auth = FirebaseAuth.instance; //Firebase Auth instance
 
   String
-      _productid; //Variables to fetch ProductId, Medicine Name, Price of the medicine and Firebase User ID
+      _productid;                                                               //Variables to fetch ProductId, Medicine Name, Price of the medicine and Firebase User ID
   String _medicinename;
   double _price;
   String uid;
 
   Future _addToCart(_pid, _mname, _mprice) async {
-    //this function is used to create a collection respective to user id to add and/or delete products from it (A cart)
+                                                                                //this function is used to create a collection respective to user id to add and/or delete products from it (A cart)
     final FirebaseUser user = await auth.currentUser();
     uid = user.uid;
     return _usercart
@@ -40,7 +40,7 @@ class _MedicineDescState extends State<MedicineDesc> {
   }
 
   final SnackBar
-      _snackBar = //SnackBar to be displayed if a medicine if added to the cart
+      _snackBar =                                                               //SnackBar to be displayed if a medicine if added to the cart
       SnackBar(content: Text("Medicine added to the cart"));
 
   @override
@@ -76,13 +76,13 @@ class _MedicineDescState extends State<MedicineDesc> {
             Container(
               color: Colors.lightBlue[100],
               child: FutureBuilder(
-                  //Using FutureBuilder (and not Stream Builder since the product list is static) to build a list view
+                                                                                //Using FutureBuilder (since the product data is static) to build a list view
                   future: _medicine.document(widget.medicineid).get(),
-                  //of the medicine list with their price and a add to cart button
+                                                                                //of the medicine list with their price and a add to cart button
                   // ignore: missing_return
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      //In case the firebase query fails then display the error
+                                                                                //In case the firebase query fails then display the error
                       return Scaffold(
                         body: Center(
                           child: Text("Error: ${snapshot.error}"),
@@ -91,7 +91,7 @@ class _MedicineDescState extends State<MedicineDesc> {
                     }
 
                     if (snapshot.connectionState == ConnectionState.done) {
-                      //In case the firebase query goes through then return the listview
+                                                                                //In case the firebase query goes through then return the listview
                       Map<String, dynamic> documentData = snapshot.data.data;
                       return ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
@@ -149,7 +149,7 @@ class _MedicineDescState extends State<MedicineDesc> {
                                   top: 90.0,
                                   left: 10.0,
                                   child: Text(
-                                    "\$ ${documentData['price']}",
+                                    "Rs. ${documentData['price']}",
                                     style: TextStyle(
                                       fontSize: 24.0,
                                     ),

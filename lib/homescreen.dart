@@ -26,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String uid;
 
   Future _addToCart(_pid, _mname, _mprice) async {
-    //this function is used to create a collection respective to user id to add and/or delete products from it (A cart)
     final FirebaseUser user = await auth.currentUser();
     uid = user.uid;
     return _usercart
@@ -35,10 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
         .document(_pid)
         .setData({"name": _mname, "price": _mprice});
   }
-
-  final SnackBar
-      _snackBar = //SnackBar to be displayed if a medicine if added to the cart
-      SnackBar(content: Text("Medicine added to the cart"));
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             },
                           ),
-                          (widget.hasOrdered)?IconButton(
+                          (widget.hasOrdered)?IconButton(                       //If the user has an active order then display the map button
                             icon: Icon(
                               Icons.map_rounded,
                               color: Colors.black,
@@ -187,12 +182,12 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 padding: EdgeInsets.fromLTRB(10.0, 470.0, 10.0, 0.0),
                 child: FutureBuilder<QuerySnapshot>(
-                    //Using FutureBuilder (and not Stream Builder since the product list is static) to build a list view
+                                                                                //Using FutureBuilder (since the product list is static) to build a list view
                     future: _medicine.getDocuments(),
-                    //of the medicine list with their price and a add to cart button
+                                                                                //of the medicine list with their price and a add to cart button
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
-                        //In case the firebase query fails then display the error
+                                                                                //In case the firebase query fails then display the error
                         return Scaffold(
                           body: Center(
                             child: Text("Error: ${snapshot.error}"),
@@ -201,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
 
                       if (snapshot.connectionState == ConnectionState.done) {
-                        //In case the firebase query goes through then return the listview
+                                                                                //In case the firebase query goes through then return a gridview
                         return GridView(
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -269,26 +264,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           fontFamily: "Lexend"),
                                     ),
 
-                                    /*TextButton(
-                                      child: Text(
-                                        "ADD TO CART",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          letterSpacing: 2.0,
-                                          fontSize: 9.0,
-                                        ),
-                                      ),
-                                      onPressed: () async {
-                                        //when added to cart, this function gets the medicine id and name and adds it to user's collection(cart)
-                                        _productid = document.documentID;
-                                        _medicinename = document.data['name'];
-                                        _price = document.data['price'];
-                                        await _addToCart(
-                                            _productid, _medicinename, _price);
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(_snackBar);
-                                      },
-                                    )*/
                                   ],
                                 ),
                               ),
@@ -304,41 +279,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     }),
               ),
-              /*(widget.hasOrdered)
-                  ? Positioned(
-                      //if user has ordered something, then help them to navigate to map otherwise return empty container
-                      bottom: 100,
-                      left: 20,
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                        width: 175.0,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12.0),
-                            color: Colors.white),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.map_rounded,
-                              color: Colors.black,
-                            ),
-                            SizedBox(
-                              width: 5.0,
-                            ),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MapPage()));
-                                },
-                                child: Text(
-                                  "Track your Order",
-                                  style: TextStyle(color: Colors.black),
-                                )),
-                          ],
-                        ),
-                      ))
-                  : Container(),*/
             ],
           ),
         ),
