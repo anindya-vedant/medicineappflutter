@@ -48,6 +48,8 @@ If the user selects the option to login via Facebook, an embedded web browser sh
 
 ## Homescreen
 
+For fetching and displaying data on the home screen `FutureBuilder()` has been used since the list of the medicine is static (as of now). Hence a grid view for each document in the firebase collection of the medicine list is opted for, as the look 
+
 ##### Composition
 
 The details that comprise the home screen are some basic details. A welcome greeting, a search bar, a catalog and a cart button, and a list of the medicine that is fetched from Firebase.
@@ -57,8 +59,6 @@ The details that comprise the home screen are some basic details. A welcome gree
 The design of the page is also a minimalistic design (see image below), and to better suit the display of the list of the medicine, a grid view has been utilized rather than a list view
 
 
-
-For fetching and displaying data on the home screen `FutureBuilder()` has been used since the list of the medicine is static (as of now). Hence a grid view for each document in the firebase collection of the medicine list is opted for, as the look 
 
 
 ## Getting Started
