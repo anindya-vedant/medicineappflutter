@@ -56,9 +56,17 @@ The details that comprise the home screen are some basic details. A welcome gree
 
 ##### Design
 
-The design of the page is also a minimalistic design (see image below), and to better suit the display of the list of the medicine, a grid view has been utilized rather than a list view
+The design of the page is also a minimalistic design (see video below), and to better suit the display of the list of the medicine, a grid view has been utilized rather than a list view
 
 
+https://user-images.githubusercontent.com/30995908/118767038-d8ff0c80-b89a-11eb-8db8-8e98460e88f7.mp4
+
+
+----------------
+
+## Medicine Description Page
+
+Every container containing one document of the list of the medicine, in other words, every box that has medicine listed in 
 
 
 ## Getting Started
