@@ -66,7 +66,11 @@ https://user-images.githubusercontent.com/30995908/118767038-d8ff0c80-b89a-11eb-
 
 ## Medicine Description Page
 
-Every container containing one document of the list of the medicine, in other words, every box that has medicine listed in 
+Every container containing one document of the list of the medicine, in other words, every box that has medicine listed on the homes page has a `GestureDetector()` wrapped around it which gets triggerd by the `onTap()` feature. When tapped on, the app redirects to a page which has a set template (see image below) and fetches the data from the respective document of the medicine and displays it on the page.
+
+<img src = 'https://firebasestorage.googleapis.com/v0/b/flutterfirebaselogin-ba439.appspot.com/o/Screenshot_20210520-150443.jpg?alt=media&token=586cd00f-e8ca-4ebb-8932-30a83be33ae5' width = '250' height = '550'/>
+
+The Medicine Description Page also has the add to cart feature on it which when pressed adds the medicine to the cart (collection of the firebase) specific to the user that is logged in. The way this bifurcation is achieved is by fetching the user id from the firebase and then creating collection based on the user id. 
 
 
 ## Getting Started
