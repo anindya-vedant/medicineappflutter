@@ -91,9 +91,60 @@ https://user-images.githubusercontent.com/30995908/119329045-6c24b180-bca2-11eb-
 
 Currently in a very crude state, the cart page has a button for completing the order. When tapped, it _pseudo_-completes (I know that that's not a word) the order and provides the user with a button to view the map.
 
+Working example below:
+
+https://user-images.githubusercontent.com/30995908/119332661-89f41580-bca6-11eb-9c40-22150a56fdfd.mp4
+
+----------------------
+
+## Map
+
+Once the order is complete (or rather in this case _pseudo_-complete) the map becomes available. The map (again) has a crude integration of Google Maps with the starting location of _Marine Drive, Mumbai_. The map in itself is working, meaning you can pan and zoom. 
+
+Bottom of the screen has a navigation button which leads you to the home page, but with a twist. The twist being that now since your order is now complete (I get it, I get it, it's only _pseudo_-complete 🤷‍♂️), a button magically appears which, _drum roll please_, takes you to the map.
+
+As I have been doing for the past one, a working example
 
 
+https://user-images.githubusercontent.com/30995908/119333701-cd02b880-bca7-11eb-990a-dd6ed1ae82db.mp4
 
+--------------------------
+
+## Known Issues/Bugs
+
+##### 1. Auto-verification
+
+The Auto-verifcation process of `FirebaseAuth()` seems to be a bit buggy at the time and hence is not automatically reading and verifying the OTPs that come in but not to worry the manual authencation method works perfectly fine. 
+
+##### 2. Facebook Login
+
+<s> Am I the only one who think Facebook SSO is a pandora's box and a half? No, might just be me then. </s> (Anyway) The Facebook SSO is also creating some issues at the time. The bug is, if the mobile app already has a facebook app installed and the login credentials saved in it then the `Login with Facebook` option throws an error. My research till now has led me to believe that it is due to some cached hashes which are conflicting with the process. If you have managed to read it this far and you have any idea about this error. Please do let me know by opening up a bug request.
+
+###### **Current Workaround**: 
+
+Uninstall facebook app from mobile. I know, not the tidiest of the solutions but if we are being honest for a second, who uses facebook anymore (sorry Mark 😜)
+
+##### 3. State Management (a lacking point)
+
+Since this is literally the first app I developed in Flutter, I'm still learning. Hence, state management was something out of my reach at the time of development.
+
+-------------------------
+
+## Future Updates
+
+* First and foremost bug fixes. I am currently working on eradicting all of the bugs from the app and make it everybody's dream first app, i.e. without bugs (That may not seem like a truth but I am working on fixing the issues
+* State management with a library
+* Payment gateway: To turn the _pseudo_-completion to an actual completion of the order
+* Polylines on map
+* Live tracking of the order
+
+
+## _That's all folks!._
+
+Although if you think that I missed out on anything please feel free to let me know. Also, if you are feeling generous enough please feel free to let me know your feedback too 😄
+
+
+### _fin_
 
 
 ## Getting Started
