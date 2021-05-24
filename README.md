@@ -70,7 +70,30 @@ Every container containing one document of the list of the medicine, in other wo
 
 <img src = 'https://firebasestorage.googleapis.com/v0/b/flutterfirebaselogin-ba439.appspot.com/o/Screenshot_20210520-150443.jpg?alt=media&token=586cd00f-e8ca-4ebb-8932-30a83be33ae5' width = '250' height = '550'/>
 
+-------------
+
+## Cart
+
 The Medicine Description Page also has the add to cart feature on it which when pressed adds the medicine to the cart (collection of the firebase) specific to the user that is logged in. The way this bifurcation is achieved is by fetching the user id from the firebase and then creating collection based on the user id. 
+
+When the _`Add to Cart`_ button is pressed, if successful (which is always), a snackbar appears at the bottom of the screen notifying the user of the same.
+
+The Cart page is build using a `StreamBuilder()` thus enables real-time updation of the cart. The elements of the cart page have a delete function, which lets user remove an item from their cart.
+
+For a working example of the cart feature please see the video below:
+
+https://user-images.githubusercontent.com/30995908/119329045-6c24b180-bca2-11eb-9594-28c1bdc60418.mp4
+
+
+-----------------
+
+## Order Completion
+
+Currently in a very crude state, the cart page has a button for completing the order. When tapped, it _pseudo_-completes (I know that that's not a word) the order and provides the user with a button to view the map.
+
+
+
+
 
 
 ## Getting Started
